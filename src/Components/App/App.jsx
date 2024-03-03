@@ -7,7 +7,7 @@ import Loader from "../Loader/Loader";
 import ErrorMessage from "../ErrorMessage/ErrorMessag";
 import Modal from "react-modal";
 import React from "react";
-import toast, { Toaster } from "react-hot-toast";
+import ImageModal from "../ImageModal/ImageModal";
 
 const customStyles = {
   content: {
@@ -27,7 +27,7 @@ export default function App() {
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
   const [error, setError] = useState(false);
-  const [modalImg, setModalImg] = useState([]);
+  const [modalImg, setModalImg] = useState("");
 
   useEffect(() => {
     if (query === "") {
@@ -51,9 +51,6 @@ export default function App() {
   }, [query, page]);
 
   const handleSearch = (newQuery) => {
-    if (newQuery === "") {
-      toast.error("enter your request");
-    }
     setQuery(newQuery);
     setImages([]);
     setPage(1);
@@ -62,7 +59,6 @@ export default function App() {
     setPage(page + 1);
   };
 
-  let subtitle;
   const [modalIsOpen, setIsOpen] = React.useState(false);
 
   function openModal(imgUrl) {
@@ -70,17 +66,12 @@ export default function App() {
     setIsOpen(true);
   }
 
-  function afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    subtitle.style.color = "#3688a3";
-  }
-
   function closeModal() {
     setIsOpen(false);
+    setModalImg(modalImg);
   }
   return (
     <div>
-      <Toaster />
       <SearchBar onSearch={handleSearch} />
       <main>
         {error && <ErrorMessage />}
@@ -93,12 +84,11 @@ export default function App() {
         {loading && <Loader />}
         <Modal
           isOpen={modalIsOpen}
-          onAfterOpen={afterOpenModal}
           onRequestClose={closeModal}
           style={customStyles}
           contentLabel="Example Modal"
         >
-          <img src={modalImg} />
+          <ImageModal imgM={modalImg} />
         </Modal>
       </main>
     </div>
