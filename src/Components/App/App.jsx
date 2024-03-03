@@ -27,7 +27,7 @@ export default function App() {
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
   const [error, setError] = useState(false);
-  const [modalImg, setModalImg] = useState("");
+  const [modalImg, setModalImg] = useState({});
 
   useEffect(() => {
     if (query === "") {
@@ -58,17 +58,16 @@ export default function App() {
   const hendleLoadMore = () => {
     setPage(page + 1);
   };
-
   const [modalIsOpen, setIsOpen] = React.useState(false);
 
   function openModal(imgUrl) {
     setModalImg(imgUrl);
+    console.log(imgUrl);
     setIsOpen(true);
   }
-
   function closeModal() {
     setIsOpen(false);
-    setModalImg(modalImg);
+    // setModalImg({});
   }
   return (
     <div>
