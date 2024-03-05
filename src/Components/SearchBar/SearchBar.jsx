@@ -10,10 +10,10 @@ export default function SearchBar({ onSearch }) {
       <Formik
         initialValues={{ query: "" }}
         onSubmit={(values, actions) => {
-          actions.resetForm();
           if (values.query === "") {
             return toast.error("enter your request");
           }
+          actions.resetForm();
           onSearch(values.query);
         }}
       >

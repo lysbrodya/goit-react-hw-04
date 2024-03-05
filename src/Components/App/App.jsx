@@ -56,6 +56,7 @@ export default function App() {
   function closeModal() {
     setIsOpen(false);
     setModalImg({});
+    setAlt({});
   }
   function fetchModalAlt(comeAlt) {
     setAlt(comeAlt);
