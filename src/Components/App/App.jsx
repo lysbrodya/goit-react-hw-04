@@ -5,22 +5,10 @@ import ImageGallery from "../ImageGallery/ImageGallery";
 import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
 import Loader from "../Loader/Loader";
 import ErrorMessage from "../ErrorMessage/ErrorMessag";
-import Modal from "react-modal";
+
 import React from "react";
 import ImageModal from "../ImageModal/ImageModal";
 
-const customStyles = {
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-  },
-};
-
-Modal.setAppElement("#root");
 export default function App() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -28,6 +16,7 @@ export default function App() {
   const [page, setPage] = useState(1);
   const [error, setError] = useState(false);
   const [modalImg, setModalImg] = useState({});
+  const [altImg, setAlt] = useState({});
 
   useEffect(() => {
     if (query === "") {
@@ -62,12 +51,14 @@ export default function App() {
 
   function openModal(imgUrl) {
     setModalImg(imgUrl);
-    console.log(imgUrl);
     setIsOpen(true);
   }
   function closeModal() {
     setIsOpen(false);
-    // setModalImg({});
+    setModalImg({});
+  }
+  function fetchModalAlt(comeAlt) {
+    setAlt(comeAlt);
   }
   return (
     <div>
@@ -75,20 +66,23 @@ export default function App() {
       <main>
         {error && <ErrorMessage />}
         {images.length > 0 && (
-          <ImageGallery items={images} imageClick={openModal} />
+          <ImageGallery
+            items={images}
+            imageClick={openModal}
+            altClick={fetchModalAlt}
+          />
         )}
         {images.length > 0 && !loading && (
           <LoadMoreBtn hendleLoad={hendleLoadMore} />
         )}
         {loading && <Loader />}
-        <Modal
+        <ImageModal
+          imgAlt={altImg}
+          imgM={modalImg}
           isOpen={modalIsOpen}
           onRequestClose={closeModal}
-          style={customStyles}
           contentLabel="Example Modal"
-        >
-          <ImageModal imgM={modalImg} />
-        </Modal>
+        />
       </main>
     </div>
   );
