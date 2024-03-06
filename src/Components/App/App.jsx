@@ -55,7 +55,8 @@ export default function App() {
   }
   function closeModal() {
     setIsOpen(false);
-    setModalImg(null);
+    // setModalImg(null);
+    // ⬆ Я теперь не пойму нужен ли тут сброс?
   }
   return (
     <div>
