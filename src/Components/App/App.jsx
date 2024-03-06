@@ -4,7 +4,7 @@ import { fetchImages } from "../../gallary-api";
 import ImageGallery from "../ImageGallery/ImageGallery";
 import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
 import Loader from "../Loader/Loader";
-import ErrorMessage from "../ErrorMessage/ErrorMessag";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 import React from "react";
 import ImageModal from "../ImageModal/ImageModal";
@@ -15,8 +15,7 @@ export default function App() {
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
   const [error, setError] = useState(false);
-  const [modalImg, setModalImg] = useState({});
-  const [altImg, setAlt] = useState({});
+  const [modalImg, setModalImg] = useState(null);
 
   useEffect(() => {
     if (query === "") {
@@ -47,19 +46,16 @@ export default function App() {
   const hendleLoadMore = () => {
     setPage(page + 1);
   };
-  const [modalIsOpen, setIsOpen] = React.useState(false);
+  const [modalIsOpen, setIsOpen] = useState(false);
 
-  function openModal(imgUrl) {
-    setModalImg(imgUrl);
+  function openModal(src, alt) {
+    setModalImg({ src, alt });
+    console.log(modalImg);
     setIsOpen(true);
   }
   function closeModal() {
     setIsOpen(false);
-    setModalImg({});
-    setAlt({});
-  }
-  function fetchModalAlt(comeAlt) {
-    setAlt(comeAlt);
+    setModalImg(null);
   }
   return (
     <div>
@@ -67,23 +63,20 @@ export default function App() {
       <main>
         {error && <ErrorMessage />}
         {images.length > 0 && (
-          <ImageGallery
-            items={images}
-            imageClick={openModal}
-            altClick={fetchModalAlt}
-          />
+          <ImageGallery items={images} imageClick={openModal} />
         )}
         {images.length > 0 && !loading && (
           <LoadMoreBtn hendleLoad={hendleLoadMore} />
         )}
         {loading && <Loader />}
-        <ImageModal
-          imgAlt={altImg}
-          imgM={modalImg}
-          isOpen={modalIsOpen}
-          onRequestClose={closeModal}
-          contentLabel="Example Modal"
-        />
+        {modalImg && (
+          <ImageModal
+            imgM={modalImg}
+            isOpen={modalIsOpen}
+            onRequestClose={closeModal}
+            contentLabel="Example Modal"
+          />
+        )}{" "}
       </main>
     </div>
   );
