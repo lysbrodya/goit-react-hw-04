@@ -5,8 +5,6 @@ import ImageGallery from "../ImageGallery/ImageGallery";
 import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
 import Loader from "../Loader/Loader";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
-
-import React from "react";
 import ImageModal from "../ImageModal/ImageModal";
 
 export default function App() {
@@ -50,13 +48,11 @@ export default function App() {
 
   function openModal(src, alt) {
     setModalImg({ src, alt });
-    console.log(modalImg);
     setIsOpen(true);
   }
   function closeModal() {
     setIsOpen(false);
-    // setModalImg(null);
-    // ⬆ Я теперь не пойму нужен ли тут сброс?
+    setModalImg(null);
   }
   return (
     <div>
@@ -67,10 +63,10 @@ export default function App() {
           <ImageGallery items={images} imageClick={openModal} />
         )}
         {images.length > 0 && !loading && (
-          <LoadMoreBtn hendleLoad={hendleLoadMore} />
+          <LoadMoreBtn hendleLoadMore={hendleLoadMore} />
         )}
         {loading && <Loader />}
-        {modalImg && (
+        {modalIsOpen && (
           <ImageModal
             imgM={modalImg}
             isOpen={modalIsOpen}
